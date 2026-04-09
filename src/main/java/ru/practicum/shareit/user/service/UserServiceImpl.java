@@ -18,7 +18,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserStorage userStorage;
 
-    private static long counter = 1;
+    private long counter = 1;
 
     @Override
     public UserResponseDto saveUser(UserCreateDto userCreateDto) {

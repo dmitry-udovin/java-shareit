@@ -24,7 +24,7 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemStorage itemStorage;
-    private static long counter = 1;
+    private long counter = 1;
 
     private final UserStorage userStorage;
 
