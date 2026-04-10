@@ -3,7 +3,7 @@ package ru.practicum.shareit.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.user.dto.UserCreateDto;
-import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserUpdateDto;
 import ru.practicum.shareit.user.dto.UserResponseDto;
 import ru.practicum.shareit.user.exception.EmailAlreadyUserException;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto updateUser(Long userId, UserDto userDto) throws UserNotFoundException {
+    public UserResponseDto updateUser(Long userId, UserUpdateDto userDto) throws UserNotFoundException {
 
         User existsUser = userStorage.findById(userId);
         if (userDto.getEmail() != null) {

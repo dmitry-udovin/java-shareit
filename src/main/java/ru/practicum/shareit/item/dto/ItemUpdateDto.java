@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class ItemDto {
+public class ItemUpdateDto {
 
     private String name;
     @Size(max = 150, message = "Максимум 150 символов")

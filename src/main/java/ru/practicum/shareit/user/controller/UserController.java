@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.user.dto.UserCreateDto;
-import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserUpdateDto;
 import ru.practicum.shareit.user.dto.UserResponseDto;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.service.UserService;
@@ -35,7 +35,7 @@ public class UserController {
 
     @PatchMapping("/{userId}")
     public UserResponseDto updateUser(@Valid @PathVariable long userId,
-                                      @RequestBody UserDto userDto) throws UserNotFoundException {
+                                      @RequestBody UserUpdateDto userDto) throws UserNotFoundException {
         log.info("Получен запрос на обновление данных пользователя: {}", userDto);
         return userService.updateUser(userId, userDto);
     }

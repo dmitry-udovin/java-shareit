@@ -3,7 +3,7 @@ package ru.practicum.shareit.item.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.dto.ItemResponseDto;
 import ru.practicum.shareit.item.dto.ManyItemsResponseDto;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
@@ -39,7 +39,6 @@ public class ItemServiceImpl implements ItemService {
         try {
             User owner = userStorage.findById(ownerId);
             item.setOwnerId(ownerId);
-            owner.getPersonalItemIds().add(item.getId());
         } catch (UserNotFoundException exp) {
             throw new UserNotFoundException("Невозможно добавить вещь пользователю которого нет.");
         }
@@ -50,19 +49,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemResponseDto updateItem(ItemDto itemDto, Long ownerId, Long itemId) throws ItemNotFoundException, NotOwnerException {
+    public ItemResponseDto updateItem(ItemUpdateDto itemDto, Long ownerId, Long itemId) throws ItemNotFoundException, NotOwnerException {
 
         Item item = itemStorage.findById(itemId);
 
         ItemMapper.updateItemFromDto(itemDto, item);
 
         try {
-            User itemOwner = userStorage.findById(ownerId);
-
-            if (!itemOwner.getPersonalItemIds().contains(itemId)) {
-                throw new NotOwnerException("Указанный пользователь не является владельцем вещи");
-            }
-
+            userStorage.findById(ownerId);
         } catch (UserNotFoundException exp) {
             throw new OwnerNotExistsException("Невозможно обновить данные, пользователя не существует.");
         }

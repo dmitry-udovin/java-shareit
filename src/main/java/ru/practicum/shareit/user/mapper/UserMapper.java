@@ -1,13 +1,13 @@
 package ru.practicum.shareit.user.mapper;
 
 import ru.practicum.shareit.user.dto.UserCreateDto;
-import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserUpdateDto;
 import ru.practicum.shareit.user.dto.UserResponseDto;
 import ru.practicum.shareit.user.model.User;
 
 public class UserMapper {
 
-    public static void updateUserFromDto(UserDto dto, User user) {
+    public static void updateUserFromDto(UserUpdateDto dto, User user) {
         if (dto.getName() != null && !dto.getName().isBlank()) {
             user.setName(dto.getName());
         }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.dto.ItemResponseDto;
 import ru.practicum.shareit.item.dto.ManyItemsResponseDto;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
@@ -39,7 +39,7 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ItemResponseDto updateItem(@Valid @PathVariable Long itemId,
-                                      @RequestBody ItemDto itemDto,
+                                      @RequestBody ItemUpdateDto itemDto,
                                       @RequestHeader("X-Sharer-User-Id") Long userId) throws NotOwnerException, ItemNotFoundException {
         return itemService.updateItem(itemDto, userId, itemId);
     }

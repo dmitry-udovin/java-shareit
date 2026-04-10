@@ -1,14 +1,14 @@
 package ru.practicum.shareit.item.mapper;
 
 import ru.practicum.shareit.item.dto.ItemCreateDto;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.dto.ItemResponseDto;
 import ru.practicum.shareit.item.dto.ManyItemsResponseDto;
 import ru.practicum.shareit.item.model.Item;
 
 public class ItemMapper {
 
-    public static void updateItemFromDto(ItemDto itemDto, Item item) {
+    public static void updateItemFromDto(ItemUpdateDto itemDto, Item item) {
         if (itemDto.getName() != null) {
             item.setName(itemDto.getName());
         }
