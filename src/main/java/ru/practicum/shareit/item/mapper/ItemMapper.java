@@ -3,7 +3,6 @@ package ru.practicum.shareit.item.mapper;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.dto.ItemResponseDto;
-import ru.practicum.shareit.item.dto.ManyItemsResponseDto;
 import ru.practicum.shareit.item.model.Item;
 
 public class ItemMapper {
@@ -43,16 +42,6 @@ public class ItemMapper {
         itemResponseDto.setAvailable(item.getAvailable());
 
         return itemResponseDto;
-    }
-
-    public static ManyItemsResponseDto itemToManyResponseDto(Item item) {
-        ManyItemsResponseDto manyItemsResponseDto = new ManyItemsResponseDto();
-
-        manyItemsResponseDto.setName(item.getName());
-        manyItemsResponseDto.setDescription(item.getDescription());
-        manyItemsResponseDto.setAvailable(item.getAvailable());
-
-        return manyItemsResponseDto;
     }
 
 }

@@ -3,7 +3,6 @@ package ru.practicum.shareit.item.service;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.dto.ItemResponseDto;
-import ru.practicum.shareit.item.dto.ManyItemsResponseDto;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.user.exception.NotOwnerException;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
@@ -18,8 +17,8 @@ public interface ItemService {
 
     ItemResponseDto getItemById(Long itemId) throws ItemNotFoundException;
 
-    List<ManyItemsResponseDto> getAllItemsInUserOwn(Long userId);
+    List<ItemResponseDto> getAllItemsInUserOwn(Long userId);
 
-    List<ManyItemsResponseDto> getItemsBySearch(String text);
+    List<ItemResponseDto> getItemsBySearch(String text);
 
 }

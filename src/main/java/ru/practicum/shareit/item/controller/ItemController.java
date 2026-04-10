@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.dto.ItemResponseDto;
-import ru.practicum.shareit.item.dto.ManyItemsResponseDto;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.exception.NotOwnerException;
@@ -51,12 +50,12 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ManyItemsResponseDto> getAllUserOwnItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public List<ItemResponseDto> getAllUserOwnItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
         return itemService.getAllItemsInUserOwn(userId);
     }
 
     @GetMapping("/search")
-    public List<ManyItemsResponseDto> getAllFindingItems(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public List<ItemResponseDto> getAllFindingItems(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                          @RequestParam String text) {
         return itemService.getItemsBySearch(text);
     }

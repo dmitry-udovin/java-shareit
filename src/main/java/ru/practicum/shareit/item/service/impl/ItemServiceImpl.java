@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.dto.ItemResponseDto;
-import ru.practicum.shareit.item.dto.ManyItemsResponseDto;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.exception.OwnerNotExistsException;
 import ru.practicum.shareit.item.mapper.ItemMapper;
@@ -14,7 +13,6 @@ import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.user.exception.NotOwnerException;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
-import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.List;
@@ -37,7 +35,7 @@ public class ItemServiceImpl implements ItemService {
         counter++;
 
         try {
-            User owner = userStorage.findById(ownerId);
+            userStorage.findById(ownerId);
             item.setOwnerId(ownerId);
         } catch (UserNotFoundException exp) {
             throw new UserNotFoundException("Невозможно добавить вещь пользователю которого нет.");
@@ -75,22 +73,22 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ManyItemsResponseDto> getAllItemsInUserOwn(Long userId) {
+    public List<ItemResponseDto> getAllItemsInUserOwn(Long userId) {
         return itemStorage.getAllItems().stream()
                 .filter(item -> userId.equals(item.getOwnerId()))
-                .map(ItemMapper::itemToManyResponseDto)
+                .map(ItemMapper::itemToResponseDto)
                 .toList();
     }
 
     @Override
-    public List<ManyItemsResponseDto> getItemsBySearch(String text) {
+    public List<ItemResponseDto> getItemsBySearch(String text) {
 
         if (text == null || text.isBlank()) {
             return List.of();
         }
 
         return itemStorage.searchByText(text).stream()
-                .map(ItemMapper::itemToManyResponseDto)
+                .map(ItemMapper::itemToResponseDto)
                 .toList();
     }
 
