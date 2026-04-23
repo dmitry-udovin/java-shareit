@@ -10,10 +10,9 @@ import ru.practicum.shareit.item.exception.OwnerNotExistsException;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.item.storage.ItemStorage;
-import ru.practicum.shareit.user.exception.NotOwnerException;
+import ru.practicum.shareit.item.storage.ItemRepository;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
-import ru.practicum.shareit.user.storage.UserStorage;
+import ru.practicum.shareit.user.storage.UserRepository;
 
 import java.util.List;
 
@@ -21,13 +20,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-    private final ItemStorage itemStorage;
     private long counter = 1;
 
-    private final UserStorage userStorage;
+    private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
 
     @Override
-    public ItemResponseDto saveItem(ItemCreateDto createDto, Long ownerId) throws UserNotFoundException {
+    public ItemResponseDto saveItem(ItemCreateDto createDto, Long ownerId) {
 
         Item item = ItemMapper.itemDtoToItem(createDto);
 
@@ -35,46 +34,48 @@ public class ItemServiceImpl implements ItemService {
         counter++;
 
         try {
-            userStorage.findById(ownerId);
+            userRepository.findById(ownerId);
             item.setOwnerId(ownerId);
         } catch (UserNotFoundException exp) {
             throw new UserNotFoundException("Невозможно добавить вещь пользователю которого нет.");
         }
 
-        Item savedItem = itemStorage.save(item);
+        Item savedItem = itemRepository.save(item);
 
         return ItemMapper.itemToResponseDto(savedItem);
     }
 
     @Override
-    public ItemResponseDto updateItem(ItemUpdateDto itemDto, Long ownerId, Long itemId) throws ItemNotFoundException, NotOwnerException {
+    public ItemResponseDto updateItem(ItemUpdateDto itemDto, Long ownerId, Long itemId) {
 
-        Item item = itemStorage.findById(itemId);
+        Item item = itemRepository.findById(itemId).orElseThrow(() ->
+                new ItemNotFoundException("Вещь с указанным номером отсутствует."));
 
         ItemMapper.updateItemFromDto(itemDto, item);
 
         try {
-            userStorage.findById(ownerId);
+            userRepository.findById(ownerId);
         } catch (UserNotFoundException exp) {
             throw new OwnerNotExistsException("Невозможно обновить данные, пользователя не существует.");
         }
 
         item.setId(itemId);
         item.setOwnerId(ownerId);
-        Item updatedItem = itemStorage.update(item);
+        Item updatedItem = itemRepository.save(item);
 
         return ItemMapper.itemToResponseDto(updatedItem);
     }
 
     @Override
-    public ItemResponseDto getItemById(Long itemId) throws ItemNotFoundException {
+    public ItemResponseDto getItemById(Long itemId) {
 
-        return ItemMapper.itemToResponseDto(itemStorage.findById(itemId));
+        return ItemMapper.itemToResponseDto(itemRepository.findById(itemId).orElseThrow(() ->
+                new ItemNotFoundException("Вещь с указанным номером отсутствует.")));
     }
 
     @Override
     public List<ItemResponseDto> getAllItemsInUserOwn(Long userId) {
-        return itemStorage.getAllItems().stream()
+        return itemRepository.findAll().stream()
                 .filter(item -> userId.equals(item.getOwnerId()))
                 .map(ItemMapper::itemToResponseDto)
                 .toList();
@@ -87,7 +88,7 @@ public class ItemServiceImpl implements ItemService {
             return List.of();
         }
 
-        return itemStorage.searchByText(text).stream()
+        return itemRepository.searchByText(text).stream()
                 .map(ItemMapper::itemToResponseDto)
                 .toList();
     }

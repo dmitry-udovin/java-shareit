@@ -21,7 +21,7 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public User update(User userForUpdate) throws UserNotFoundException {
+    public User update(User userForUpdate) {
         if (users.containsKey(userForUpdate.getId())) {
             users.put(userForUpdate.getId(), userForUpdate);
             return userForUpdate;
@@ -31,7 +31,7 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public User findById(Long userId) throws UserNotFoundException {
+    public User findById(Long userId) {
         if (users.containsKey(userId)) {
             return users.get(userId);
         } else {
@@ -40,7 +40,7 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public User deleteById(Long userId) throws UserNotFoundException {
+    public User deleteById(Long userId) {
         if (users.containsKey(userId)) {
             return users.remove(userId);
         } else {

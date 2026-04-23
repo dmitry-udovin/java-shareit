@@ -9,16 +9,17 @@ import ru.practicum.shareit.user.exception.EmailAlreadyUserException;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.storage.UserStorage;
+import ru.practicum.shareit.user.storage.UserRepository;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserStorage userStorage;
 
     private long counter = 1;
+
+    private final UserRepository repository;
 
     @Override
     public UserResponseDto saveUser(UserCreateDto userCreateDto) {
@@ -28,15 +29,15 @@ public class UserServiceImpl implements UserService {
         counter++;
 
         checkExistsEmail(user.getEmail());
-        User savedUser = userStorage.save(user);
+        User savedUser = repository.save(user);
 
         return UserMapper.userToResponseDto(savedUser);
     }
 
     @Override
-    public UserResponseDto updateUser(Long userId, UserUpdateDto userDto) throws UserNotFoundException {
+    public UserResponseDto updateUser(Long userId, UserUpdateDto userDto) {
 
-        User existsUser = userStorage.findById(userId);
+        User existsUser = repository.findById(userId).orElseThrow(() -> new UserNotFoundException("Пользователь с указанным номером отсутствует."));
         if (userDto.getEmail() != null) {
             checkExistsEmail(userDto.getEmail());
         }
@@ -46,24 +47,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto getUserById(Long userId) throws UserNotFoundException {
+    public UserResponseDto getUserById(Long userId) {
 
-        return UserMapper.userToResponseDto(userStorage.findById(userId));
+        return UserMapper.userToResponseDto(repository.findById(userId).orElseThrow(() ->
+                new UserNotFoundException("Пользователь с указанным номером отсутствует.")));
     }
 
     @Override
     public List<UserResponseDto> getAllUsers() {
-        return userStorage.getAllUsers().stream()
+        return repository.findAll().stream()
                 .map(UserMapper::userToResponseDto).toList();
     }
 
     @Override
-    public UserResponseDto deleteUser(Long userId) throws UserNotFoundException {
-        return UserMapper.userToResponseDto(userStorage.deleteById(userId));
+    public UserResponseDto deleteUser(Long userId) {
+        return UserMapper.userToResponseDto(repository.deleteUserById(userId));
     }
 
     private void checkExistsEmail(String email) {
-        for (User obj : userStorage.getAllUsers()) {
+        for (User obj : repository.findAll()) {
             if (email.equals(obj.getEmail())) {
                 throw new EmailAlreadyUserException("Отказано. Пользователь с данной почтой уже существует");
             }

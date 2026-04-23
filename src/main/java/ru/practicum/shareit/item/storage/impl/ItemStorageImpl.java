@@ -21,7 +21,7 @@ public class ItemStorageImpl implements ItemStorage {
     }
 
     @Override
-    public Item update(Item itemForUpdate) throws ItemNotFoundException {
+    public Item update(Item itemForUpdate) {
         if (items.containsKey(itemForUpdate.getId())) {
             items.put(itemForUpdate.getId(), itemForUpdate);
             return itemForUpdate;
@@ -31,7 +31,7 @@ public class ItemStorageImpl implements ItemStorage {
     }
 
     @Override
-    public Item findById(Long itemId) throws ItemNotFoundException {
+    public Item findById(Long itemId) {
         if (items.containsKey(itemId)) {
             return items.get(itemId);
         } else {
@@ -40,7 +40,7 @@ public class ItemStorageImpl implements ItemStorage {
     }
 
     @Override
-    public Item deleteById(Long itemId) throws ItemNotFoundException {
+    public Item deleteById(Long itemId) {
         if (items.containsKey(itemId)) {
             return items.remove(itemId);
         } else {
