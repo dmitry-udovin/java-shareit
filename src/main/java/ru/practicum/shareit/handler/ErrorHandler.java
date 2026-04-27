@@ -5,10 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.shareit.booking.exception.AccessDeniedException;
+import ru.practicum.shareit.booking.exception.MissingBookingException;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.exception.OwnerNotExistsException;
 import ru.practicum.shareit.user.exception.EmailAlreadyUserException;
 import ru.practicum.shareit.user.exception.NotOwnerException;
+import ru.practicum.shareit.user.exception.NotWhoBookedException;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 
 @RestControllerAdvice
@@ -17,7 +20,8 @@ public class ErrorHandler {
     // ресурс не найден
     @ExceptionHandler({
             UserNotFoundException.class,
-            ItemNotFoundException.class
+            ItemNotFoundException.class,
+            MissingBookingException.class
     })
     public ResponseEntity<ErrorResponse> handleNotFound(Exception exp) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -27,7 +31,9 @@ public class ErrorHandler {
     // не владелец
     @ExceptionHandler({
             NotOwnerException.class,
-            OwnerNotExistsException.class
+            NotWhoBookedException.class,
+            OwnerNotExistsException.class,
+            AccessDeniedException.class
     })
     public ResponseEntity<ErrorResponse> handleForbidden(Exception exp) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)

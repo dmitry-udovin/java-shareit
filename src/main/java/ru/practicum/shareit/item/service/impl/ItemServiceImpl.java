@@ -33,12 +33,8 @@ public class ItemServiceImpl implements ItemService {
         item.setId(counter);
         counter++;
 
-        try {
-            userRepository.findById(ownerId);
-            item.setOwnerId(ownerId);
-        } catch (UserNotFoundException exp) {
-            throw new UserNotFoundException("Невозможно добавить вещь пользователю которого нет.");
-        }
+        userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException("Невозможно добавить вещь пользователю которого нет."));
+        item.setOwnerId(ownerId);
 
         Item savedItem = itemRepository.save(item);
 
@@ -53,11 +49,9 @@ public class ItemServiceImpl implements ItemService {
 
         ItemMapper.updateItemFromDto(itemDto, item);
 
-        try {
-            userRepository.findById(ownerId);
-        } catch (UserNotFoundException exp) {
-            throw new OwnerNotExistsException("Невозможно обновить данные, пользователя не существует.");
-        }
+
+        userRepository.findById(ownerId).orElseThrow(() ->
+                new OwnerNotExistsException("Невозможно обновить данные, пользователя не существует."));
 
         item.setId(itemId);
         item.setOwnerId(ownerId);
