@@ -1,6 +1,7 @@
+server:
+  port: 8080
+
 spring:
-  profiles:
-    active: test
   jpa:
     hibernate:
       ddl-auto: none
@@ -11,12 +12,7 @@ spring:
     init:
       mode: always
 
-server:
-  port: 8080
-
 logging:
   level:
     org.springframework.orm.jpa: INFO
     org.springframework.transaction: INFO
-    org.springframework.transaction.interceptor: TRACE
-    org.springframework.orm.jpa.JpaTransactionManager: DEBUG
