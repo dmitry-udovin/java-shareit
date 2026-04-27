@@ -1,7 +1,7 @@
 package ru.practicum.shareit.booking.mapper;
 
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
-import ru.practicum.shareit.booking.dto.CreateBookingDto;
+import ru.practicum.shareit.booking.dto.BookingShortDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.item.dto.ItemShortDto;
 import ru.practicum.shareit.user.dto.UserShortDto;
@@ -10,18 +10,6 @@ public class BookingMapper {
 
     private BookingMapper() {
 
-    }
-
-    public static Booking fromDto(CreateBookingDto dto) {
-
-        Booking booking = new Booking();
-
-        booking.getBookedItem().setId(dto.getBookedItemId());
-        booking.getUserWhoBooked().setId(dto.getIdWhoBooked());
-        booking.setStartRentTime(dto.getStartRentTime());
-        booking.setEndRentTime(dto.getEndRentTime());
-
-        return booking;
     }
 
     public static BookingResponseDto toResponseDto(Booking booking) {
@@ -44,6 +32,16 @@ public class BookingMapper {
         dto.setItem(itemDto);
 
         return dto;
+    }
+
+    public static BookingShortDto toShortDto(Booking booking) {
+        if (booking == null) return null;
+        return new BookingShortDto(
+                booking.getId(),
+                booking.getUserWhoBooked().getId(),
+                booking.getStartRentTime(),
+                booking.getEndRentTime()
+        );
     }
 
 

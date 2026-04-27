@@ -7,6 +7,10 @@ import ru.practicum.shareit.item.model.Item;
 
 public class ItemMapper {
 
+    private ItemMapper() {
+
+    }
+
     public static void updateItemFromDto(ItemUpdateDto itemDto, Item item) {
         if (itemDto.getName() != null) {
             item.setName(itemDto.getName());
@@ -23,9 +27,9 @@ public class ItemMapper {
     public static Item itemDtoToItem(ItemCreateDto itemCreateDto) {
         Item item = new Item();
 
-        item.setName(itemCreateDto.getName());
-        item.setDescription(itemCreateDto.getDescription());
-        item.setAvailable(itemCreateDto.getAvailable());
+        item.setName(itemCreateDto.name());
+        item.setDescription(itemCreateDto.description());
+        item.setAvailable(itemCreateDto.available());
 
         item.setCountRents(0);
 

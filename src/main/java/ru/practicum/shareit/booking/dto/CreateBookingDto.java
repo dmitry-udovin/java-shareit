@@ -6,31 +6,16 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Data
-public class CreateBookingDto {
-
-    @NotNull
-    @Positive
-    private final Long bookedItemId;
-    @NotNull
-    @Positive
-    private final Long idWhoBooked;
-    @NotNull
-    @FutureOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime startRentTime;
-    @NotNull
-    @Future
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime endRentTime;
+public record CreateBookingDto(@NotNull @Positive Long itemId,
+                               @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") @NotNull @FutureOrPresent LocalDateTime start,
+                               @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") @NotNull @Future LocalDateTime end) {
 
     @AssertTrue(message = "Дата окончания бронирования должна быть позже даты начала")
     public boolean isPeriodValid() {
-        return startRentTime != null && endRentTime != null && endRentTime.isAfter(startRentTime);
+        return start != null && end != null && end.isAfter(start);
     }
 
 }
