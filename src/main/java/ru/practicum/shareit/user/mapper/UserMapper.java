@@ -12,11 +12,11 @@ public class UserMapper {
     }
 
     public static void updateUserFromDto(UserUpdateDto dto, User user) {
-        if (dto.getName() != null && !dto.getName().isBlank()) {
-            user.setName(dto.getName());
+        if (dto.name() != null && !dto.name().isBlank()) {
+            user.setName(dto.name());
         }
-        if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
-            user.setEmail(dto.getEmail());
+        if (dto.email() != null && !dto.email().isBlank()) {
+            user.setEmail(dto.email());
         }
 
     }
@@ -31,13 +31,8 @@ public class UserMapper {
     }
 
     public static UserResponseDto userToResponseDto(User user) {
-        UserResponseDto userResponseDto = new UserResponseDto();
 
-        userResponseDto.setId(user.getId());
-        userResponseDto.setName(user.getName());
-        userResponseDto.setEmail(user.getEmail());
-
-        return userResponseDto;
+        return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
     }
 
 }

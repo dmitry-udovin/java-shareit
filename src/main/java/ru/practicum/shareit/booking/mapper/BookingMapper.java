@@ -14,24 +14,15 @@ public class BookingMapper {
 
     public static BookingResponseDto toResponseDto(Booking booking) {
 
-        BookingResponseDto dto = new BookingResponseDto();
-        dto.setId(booking.getId());
-        dto.setStart(booking.getStartRentTime());
-        dto.setEnd(booking.getEndRentTime());
-        dto.setStatus(booking.getStatus());
-
         // Маппим booker
-        UserShortDto bookerDto = new UserShortDto();
-        bookerDto.setId(booking.getUserWhoBooked().getId());
-        dto.setBooker(bookerDto);
+        UserShortDto bookerDto = new UserShortDto(booking.getUserWhoBooked().getId());
 
         // Маппим item
-        ItemShortDto itemDto = new ItemShortDto();
-        itemDto.setId(booking.getBookedItem().getId());
-        itemDto.setName(booking.getBookedItem().getName());
-        dto.setItem(itemDto);
+        ItemShortDto itemDto = new ItemShortDto(booking.getBookedItem().getId(), booking.getBookedItem().getName());
 
-        return dto;
+
+        return new BookingResponseDto(booking.getId(), booking.getStartRentTime(), booking.getEndRentTime(),
+                booking.getStatus(), bookerDto, itemDto);
     }
 
     public static BookingShortDto toShortDto(Booking booking) {

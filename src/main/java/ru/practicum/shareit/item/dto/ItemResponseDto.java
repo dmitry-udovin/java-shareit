@@ -1,21 +1,15 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.Data;
 import ru.practicum.shareit.booking.dto.BookingShortDto;
 import ru.practicum.shareit.comment.dto.CommentResponseDto;
 
 import java.util.List;
 
-@Data
-public class ItemResponseDto {
+public record ItemResponseDto(Long id, String name, String description, Boolean available, BookingShortDto lastBooking,
+                              BookingShortDto nextBooking, List<CommentResponseDto> comments) {
 
-    private Long id;
-    private String name;
-    private String description;
-    private Boolean available = true;
+    public ItemResponseDto(Long id, String name, String description, Boolean available) {
+        this(id, name, description, available, null, null, null);
+    }
 
-    private BookingShortDto lastBooking;
-    private BookingShortDto nextBooking;
-
-    private List<CommentResponseDto> comments;
 }

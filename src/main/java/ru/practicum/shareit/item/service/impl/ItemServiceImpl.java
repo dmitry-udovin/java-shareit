@@ -184,7 +184,7 @@ public class ItemServiceImpl implements ItemService {
                 ));
 
         itemDtos.forEach(dto ->
-                dto.setComments(commentsByItem.getOrDefault(dto.getId(), Collections.emptyList()))
+                dto.setComments(commentsByItem.getOrDefault(dto.id(), Collections.emptyList()))
         );
     }
 

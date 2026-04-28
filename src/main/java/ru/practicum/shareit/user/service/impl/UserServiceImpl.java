@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto updateUser(Long userId, UserUpdateDto userDto) {
 
         User existsUser = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Пользователь с указанным номером отсутствует."));
-        if (userDto.getEmail() != null) {
-            if (userRepository.existsByEmail(userDto.getEmail())) {
+        if (userDto.email() != null) {
+            if (userRepository.existsByEmail(userDto.email())) {
                 throw new EmailAlreadyUserException("Email уже занят");
             }
         }

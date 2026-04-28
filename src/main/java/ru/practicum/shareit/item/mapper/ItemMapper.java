@@ -12,14 +12,14 @@ public class ItemMapper {
     }
 
     public static void updateItemFromDto(ItemUpdateDto itemDto, Item item) {
-        if (itemDto.getName() != null) {
-            item.setName(itemDto.getName());
+        if (itemDto.name() != null) {
+            item.setName(itemDto.name());
         }
-        if (itemDto.getDescription() != null) {
-            item.setDescription(itemDto.getDescription());
+        if (itemDto.description() != null) {
+            item.setDescription(itemDto.description());
         }
-        if (itemDto.getAvailable() != null) {
-            item.setAvailable(itemDto.getAvailable());
+        if (itemDto.available() != null) {
+            item.setAvailable(itemDto.available());
         }
 
     }
@@ -37,15 +37,9 @@ public class ItemMapper {
     }
 
     public static ItemResponseDto itemToResponseDto(Item item) {
-        ItemResponseDto itemResponseDto = new ItemResponseDto();
 
-        itemResponseDto.setId(item.getId());
-
-        itemResponseDto.setName(item.getName());
-        itemResponseDto.setDescription(item.getDescription());
-        itemResponseDto.setAvailable(item.getAvailable());
-
-        return itemResponseDto;
+        return new ItemResponseDto(item.getId(), item.getName(), item.getDescription(),
+                item.getAvailable());
     }
 
 }
