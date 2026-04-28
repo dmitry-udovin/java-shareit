@@ -55,8 +55,8 @@ public class ItemServiceImpl implements ItemService {
         Item savedItem = itemRepository.save(item);
 
         ItemResponseDto dto = ItemMapper.itemToResponseDto(savedItem);
-        dto.setComments(Collections.emptyList());
-        return dto;
+
+        return dto.withComments(Collections.emptyList());
     }
 
     @Override
@@ -126,8 +126,8 @@ public class ItemServiceImpl implements ItemService {
                     .max(Comparator.comparing(Booking::getEndRentTime))
                     .orElse(null);
 
-            dto.setNextBooking(next != null ? BookingMapper.toShortDto(next) : null);
-            dto.setLastBooking(last != null ? BookingMapper.toShortDto(last) : null);
+            dto.withNextBooking(next != null ? BookingMapper.toShortDto(next) : null);
+            dto.withNextBooking(last != null ? BookingMapper.toShortDto(last) : null);
 
             return dto;
         }).toList();
@@ -184,7 +184,7 @@ public class ItemServiceImpl implements ItemService {
                 ));
 
         itemDtos.forEach(dto ->
-                dto.setComments(commentsByItem.getOrDefault(dto.id(), Collections.emptyList()))
+                dto.withComments(commentsByItem.getOrDefault(dto.id(), Collections.emptyList()))
         );
     }
 
