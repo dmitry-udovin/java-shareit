@@ -126,8 +126,12 @@ public class ItemServiceImpl implements ItemService {
                     .max(Comparator.comparing(Booking::getEndRentTime))
                     .orElse(null);
 
-            dto.withNextBooking(next != null ? BookingMapper.toShortDto(next) : null);
-            dto.withNextBooking(last != null ? BookingMapper.toShortDto(last) : null);
+            if (next != null) {
+                dto = dto.withNextBooking(BookingMapper.toShortDto(next));
+            }
+            if (last != null) {
+                dto = dto.withLastBooking(BookingMapper.toShortDto(last));
+            }
 
             return dto;
         }).toList();
