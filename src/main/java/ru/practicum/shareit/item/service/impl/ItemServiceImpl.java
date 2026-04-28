@@ -75,9 +75,7 @@ public class ItemServiceImpl implements ItemService {
         item.setOwnerId(ownerId);
         Item updatedItem = itemRepository.save(item);
 
-        ItemResponseDto dto = ItemMapper.itemToResponseDto(updatedItem);
-        fillComments(List.of(dto));
-        return dto;
+        return ItemMapper.itemToResponseDto(updatedItem);
     }
 
     @Override
@@ -87,8 +85,13 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new ItemNotFoundException("Вещь с указанным номером отсутствует."));
 
         ItemResponseDto dto = ItemMapper.itemToResponseDto(item);
-        fillComments(List.of(dto));
-        return dto;
+
+        List<CommentResponseDto> comments = commentRepository.findByItemId(itemId)
+                .stream()
+                .map(CommentMapper::toResponseDto)
+                .toList();
+
+        return dto.withComments(comments);
     }
 
     @Override
@@ -110,7 +113,7 @@ public class ItemServiceImpl implements ItemService {
         LocalDateTime now = LocalDateTime.now();
 
 
-        List<ItemResponseDto> dtos = items.stream().map(item -> {
+        return items.stream().map(item -> {
             ItemResponseDto dto = ItemMapper.itemToResponseDto(item);
             List<Booking> itemBookings = bookingsByItem.getOrDefault(item.getId(), Collections.emptyList());
 
@@ -135,9 +138,6 @@ public class ItemServiceImpl implements ItemService {
 
             return dto;
         }).toList();
-
-        fillComments(dtos);
-        return dtos;
     }
 
     @Override
@@ -147,12 +147,9 @@ public class ItemServiceImpl implements ItemService {
             return List.of();
         }
 
-        List<ItemResponseDto> dtos = itemRepository.searchByText(text).stream()
+        return itemRepository.searchByText(text).stream()
                 .map(ItemMapper::itemToResponseDto)
                 .toList();
-
-        fillComments(dtos);
-        return dtos;
     }
 
     @Override
@@ -175,21 +172,6 @@ public class ItemServiceImpl implements ItemService {
 
         Comment saved = commentRepository.save(comment);
         return CommentMapper.toResponseDto(saved);
-    }
-
-    private void fillComments(List<ItemResponseDto> itemDtos) {
-        if (itemDtos.isEmpty()) return;
-
-        Map<Long, List<CommentResponseDto>> commentsByItem = commentRepository
-                .findAll().stream()
-                .collect(Collectors.groupingBy(
-                        c -> c.getItem().getId(),
-                        Collectors.mapping(CommentMapper::toResponseDto, Collectors.toList())
-                ));
-
-        itemDtos.forEach(dto ->
-                dto.withComments(commentsByItem.getOrDefault(dto.id(), Collections.emptyList()))
-        );
     }
 
 }
