@@ -7,36 +7,32 @@ import ru.practicum.shareit.user.model.User;
 
 public class UserMapper {
 
+    private UserMapper() {
+
+    }
+
     public static void updateUserFromDto(UserUpdateDto dto, User user) {
-        if (dto.getName() != null && !dto.getName().isBlank()) {
-            user.setName(dto.getName());
+        if (dto.name() != null && !dto.name().isBlank()) {
+            user.setName(dto.name());
         }
-        if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
-            user.setEmail(dto.getEmail());
+        if (dto.email() != null && !dto.email().isBlank()) {
+            user.setEmail(dto.email());
         }
-        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
-            user.setPassword(dto.getPassword());
-        }
+
     }
 
     public static User userDtoToUser(UserCreateDto userCreateDto) {
         User user = new User();
 
-        user.setName(userCreateDto.getName());
-        user.setEmail(userCreateDto.getEmail());
-        user.setPassword(userCreateDto.getPassword());
+        user.setName(userCreateDto.name());
+        user.setEmail(userCreateDto.email());
 
         return user;
     }
 
     public static UserResponseDto userToResponseDto(User user) {
-        UserResponseDto userResponseDto = new UserResponseDto();
 
-        userResponseDto.setId(user.getId());
-        userResponseDto.setName(user.getName());
-        userResponseDto.setEmail(user.getEmail());
-
-        return userResponseDto;
+        return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
     }
 
 }

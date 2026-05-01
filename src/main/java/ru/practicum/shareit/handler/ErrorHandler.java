@@ -5,10 +5,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.shareit.booking.exception.AccessDeniedException;
+import ru.practicum.shareit.booking.exception.CannotCreateBookingException;
+import ru.practicum.shareit.booking.exception.MissingBookingException;
+import ru.practicum.shareit.comment.exception.CommentValidationException;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.exception.OwnerNotExistsException;
 import ru.practicum.shareit.user.exception.EmailAlreadyUserException;
 import ru.practicum.shareit.user.exception.NotOwnerException;
+import ru.practicum.shareit.user.exception.NotWhoBookedException;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 
 @RestControllerAdvice
@@ -27,7 +32,10 @@ public class ErrorHandler {
     // не владелец
     @ExceptionHandler({
             NotOwnerException.class,
-            OwnerNotExistsException.class
+            NotWhoBookedException.class,
+            MissingBookingException.class,
+            OwnerNotExistsException.class,
+            AccessDeniedException.class
     })
     public ResponseEntity<ErrorResponse> handleForbidden(Exception exp) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -35,7 +43,8 @@ public class ErrorHandler {
     }
 
     // ошибки валидации
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class,
+            CommentValidationException.class})
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException exp) {
         String message = exp.getBindingResult().getFieldErrors().stream()
                 .map(err -> err.getField() + " " + err.getDefaultMessage())
@@ -49,6 +58,12 @@ public class ErrorHandler {
     public ResponseEntity<ErrorResponse> handleEmailAlreadyUsed(EmailAlreadyUserException exp) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponse("CONFLICT", exp.getMessage())); // 409
+    }
+
+    @ExceptionHandler(CannotCreateBookingException.class)
+    public ResponseEntity<ErrorResponse> handleCannotCreateBooking(CannotCreateBookingException exp) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("BAD_REQUEST", exp.getMessage()));
     }
 
     @ExceptionHandler(Throwable.class)

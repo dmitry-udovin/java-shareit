@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.user.dto.UserCreateDto;
 import ru.practicum.shareit.user.dto.UserUpdateDto;
 import ru.practicum.shareit.user.dto.UserResponseDto;
-import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class UserController {
 
     @PatchMapping("/{userId}")
     public UserResponseDto updateUser(@Valid @PathVariable long userId,
-                                      @RequestBody UserUpdateDto userDto) throws UserNotFoundException {
+                                      @RequestBody UserUpdateDto userDto) {
         log.info("Получен запрос на обновление данных пользователя: {}", userDto);
         return userService.updateUser(userId, userDto);
     }
@@ -46,13 +45,13 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserResponseDto findUserById(@PathVariable long userId) throws UserNotFoundException {
+    public UserResponseDto findUserById(@PathVariable long userId) {
         log.info("Получен запрос на поиск пользователя по id: {}", userId);
         return userService.getUserById(userId);
     }
 
     @DeleteMapping("/{userId}")
-    public UserResponseDto deleteUserById(@PathVariable long userId) throws UserNotFoundException {
+    public UserResponseDto deleteUserById(@PathVariable long userId) {
         log.info("Получен запрос на удаление пользователя, id: {}", userId);
         return userService.deleteUser(userId);
     }

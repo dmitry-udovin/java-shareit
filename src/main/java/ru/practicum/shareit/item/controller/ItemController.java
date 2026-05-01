@@ -12,13 +12,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.shareit.comment.dto.CommentCreateDto;
+import ru.practicum.shareit.comment.dto.CommentResponseDto;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.dto.ItemResponseDto;
-import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.user.exception.NotOwnerException;
-import ru.practicum.shareit.user.exception.UserNotFoundException;
 
 import java.util.List;
 
@@ -32,20 +31,20 @@ public class ItemController {
 
     @PostMapping
     public ItemResponseDto createItem(@Valid @RequestBody ItemCreateDto itemDto,
-                                      @RequestHeader("X-Sharer-User-Id") Long userId) throws UserNotFoundException {
+                                      @RequestHeader("X-Sharer-User-Id") Long userId) {
         return itemService.saveItem(itemDto, userId);
     }
 
     @PatchMapping("/{itemId}")
     public ItemResponseDto updateItem(@Valid @PathVariable Long itemId,
                                       @RequestBody ItemUpdateDto itemDto,
-                                      @RequestHeader("X-Sharer-User-Id") Long userId) throws NotOwnerException, ItemNotFoundException {
+                                      @RequestHeader("X-Sharer-User-Id") Long userId) {
         return itemService.updateItem(itemDto, userId, itemId);
     }
 
     @GetMapping("/{itemId}")
     public ItemResponseDto getById(@PathVariable Long itemId,
-                                   @RequestHeader("X-Sharer-User-Id") Long userId) throws ItemNotFoundException {
+                                   @RequestHeader("X-Sharer-User-Id") Long userId) {
         return itemService.getItemById(itemId);
     }
 
@@ -56,8 +55,16 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemResponseDto> getAllFindingItems(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                         @RequestParam String text) {
+                                                    @RequestParam String text) {
         return itemService.getItemsBySearch(text);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentResponseDto addComment(@PathVariable Long itemId,
+                                         @RequestHeader("X-Sharer-User-Id") Long userId,
+                                         @Valid @RequestBody CommentCreateDto dto) {
+        log.info("Получен запрос на добавление отзыва к вещи itemId={}, userId={}", itemId, userId);
+        return itemService.addComment(itemId, userId, dto);
     }
 
 
