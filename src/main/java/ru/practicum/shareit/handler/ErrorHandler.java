@@ -11,6 +11,7 @@ import ru.practicum.shareit.booking.exception.MissingBookingException;
 import ru.practicum.shareit.comment.exception.CommentValidationException;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.exception.OwnerNotExistsException;
+import ru.practicum.shareit.request.exception.RequestNotFoundException;
 import ru.practicum.shareit.user.exception.EmailAlreadyUserException;
 import ru.practicum.shareit.user.exception.NotOwnerException;
 import ru.practicum.shareit.user.exception.NotWhoBookedException;
@@ -22,7 +23,8 @@ public class ErrorHandler {
     // ресурс не найден
     @ExceptionHandler({
             UserNotFoundException.class,
-            ItemNotFoundException.class
+            ItemNotFoundException.class,
+            RequestNotFoundException.class
     })
     public ResponseEntity<ErrorResponse> handleNotFound(Exception exp) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -43,8 +45,7 @@ public class ErrorHandler {
     }
 
     // ошибки валидации
-    @ExceptionHandler({MethodArgumentNotValidException.class,
-            CommentValidationException.class})
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException exp) {
         String message = exp.getBindingResult().getFieldErrors().stream()
                 .map(err -> err.getField() + " " + err.getDefaultMessage())
@@ -52,6 +53,12 @@ public class ErrorHandler {
                 .orElse("Validation error");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse("VALIDATION_ERROR", message));
+    }
+
+    @ExceptionHandler({CommentValidationException.class, IllegalArgumentException.class})
+    public ResponseEntity<ErrorResponse> handleBadRequest(RuntimeException exp) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("BAD_REQUEST", exp.getMessage()));
     }
 
     @ExceptionHandler(EmailAlreadyUserException.class)

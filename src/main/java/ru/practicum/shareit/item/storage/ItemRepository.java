@@ -19,4 +19,12 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByOwnerId(Long ownerId);
 
+    boolean existsByIdAndOwnerId(Long itemId, Long ownerId);
+
+    List<Item> findByOwnerIdAndAvailableTrue(Long ownerId);
+
+    List<Item> findByRequestIdOrderByIdAsc(Long requestId);
+
+    List<Item> findByRequestIdInOrderByIdAsc(List<Long> requestIds);
+
 }

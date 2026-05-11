@@ -22,6 +22,8 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.item.storage.ItemRepository;
+import ru.practicum.shareit.request.exception.RequestNotFoundException;
+import ru.practicum.shareit.request.storage.ItemRequestRepository;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserRepository;
@@ -42,11 +44,18 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
+    private final ItemRequestRepository requestRepository;
 
     @Override
     public ItemResponseDto saveItem(ItemCreateDto createDto, Long ownerId) {
 
         Item item = ItemMapper.itemDtoToItem(createDto);
+
+        if (createDto.requestId() != null) {
+            var request = requestRepository.findById(createDto.requestId())
+                    .orElseThrow(() -> new RequestNotFoundException("Запрос на вещь не найден"));
+            item.setRequest(request);
+        }
 
         userRepository.findById(ownerId).orElseThrow(() ->
                 new UserNotFoundException("Невозможно добавить вещь пользователю которого нет."));

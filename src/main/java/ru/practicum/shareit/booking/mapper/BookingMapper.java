@@ -18,7 +18,11 @@ public class BookingMapper {
         UserShortDto bookerDto = new UserShortDto(booking.getUserWhoBooked().getId());
 
         // Маппим item
-        ItemShortDto itemDto = new ItemShortDto(booking.getBookedItem().getId(), booking.getBookedItem().getName());
+        ItemShortDto itemDto = new ItemShortDto(
+                booking.getBookedItem().getId(),
+                booking.getBookedItem().getName(),
+                booking.getBookedItem().getOwnerId()
+        );
 
 
         return new BookingResponseDto(booking.getId(), booking.getStartRentTime(), booking.getEndRentTime(),

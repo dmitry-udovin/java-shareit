@@ -1,19 +1,13 @@
 package ru.practicum.shareit.request.dto;
 
-import lombok.Data;
-import ru.practicum.shareit.request.model.RequestStatus;
+import ru.practicum.shareit.item.dto.ItemShortDto;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-@Data
-public class ItemRequestDto {
-
-    private String description;
-    private Long requestorId;
-    private RequestStatus status = RequestStatus.WAITING;
-    private LocalDateTime created;
-    private List<Long> itemIds = new ArrayList<>();
-
-}
+public record ItemRequestDto(Long id,
+                             String description,
+                             Long requesterId,
+                             LocalDateTime created,
+                             List<ItemShortDto> items
+) {}
