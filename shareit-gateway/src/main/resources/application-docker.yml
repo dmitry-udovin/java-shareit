@@ -1,9 +1,10 @@
 server:
   port: 8080
+  address: 0.0.0.0
 
 shareit:
   server:
-    url: ${SHAREIT_SERVER_URL:http://localhost:9090}
+    url: ${SHAREIT_SERVER_URL:http://${SHAREIT_SERVER_HOST:shareit-server}:9090}
 
 spring:
   main:
