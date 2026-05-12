@@ -169,7 +169,7 @@ public class ItemServiceImpl implements ItemService {
         User author = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Пользователь с id=" + userId + " не найден"));
 
-        bookingRepository.findApprovedPastBooking(itemId, userId, LocalDateTime.now())
+        bookingRepository.findApprovedPastBooking(itemId, userId, LocalDateTime.now().plusSeconds(1))
                 .orElseThrow(() -> new CommentValidationException(
                         "Нельзя оставить отзыв: нет завершённого одобренного бронирования этой вещи"));
 

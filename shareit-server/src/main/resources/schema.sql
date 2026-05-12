@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS bookings (
 
     CONSTRAINT fk_booker_id FOREIGN KEY(who_booked) REFERENCES users(id),
     CONSTRAINT fk_item_id FOREIGN KEY(item_id) REFERENCES items(id),
-    CONSTRAINT chk_future_rent CHECK (start_rent > CURRENT_TIMESTAMP),
     CONSTRAINT chk_rent_period CHECK (end_rent > start_rent)
 );
 
