@@ -6,6 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.booking.exception.AccessDeniedException;
+import ru.practicum.shareit.booking.exception.BookingDateValidationException;
 import ru.practicum.shareit.booking.exception.CannotCreateBookingException;
 import ru.practicum.shareit.booking.exception.MissingBookingException;
 import ru.practicum.shareit.comment.exception.CommentValidationException;
@@ -53,6 +54,12 @@ public class ErrorHandler {
                 .orElse("Validation error");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse("VALIDATION_ERROR", message));
+    }
+
+    @ExceptionHandler(BookingDateValidationException.class)
+    public ResponseEntity<ErrorResponse> handleBookingDateValidation(BookingDateValidationException exp) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("VALIDATION_ERROR", exp.getMessage()));
     }
 
     @ExceptionHandler({CommentValidationException.class, IllegalArgumentException.class})

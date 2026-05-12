@@ -39,7 +39,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "WHERE b.bookedItem.id = :itemId " +
             "AND b.userWhoBooked.id = :userId " +
             "AND b.status = 'APPROVED' " +
-            "AND b.endRentTime < :now")
+            "AND b.endRentTime <= :now")
     Optional<Booking> findApprovedPastBooking(@Param("itemId") Long itemId,
                                               @Param("userId") Long userId,
                                               @Param("now") LocalDateTime now);

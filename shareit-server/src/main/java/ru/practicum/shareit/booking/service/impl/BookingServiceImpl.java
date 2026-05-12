@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingResponseDto;
 import ru.practicum.shareit.booking.dto.CreateBookingDto;
 import ru.practicum.shareit.booking.exception.AccessDeniedException;
+import ru.practicum.shareit.booking.exception.BookingDateValidationException;
 import ru.practicum.shareit.booking.exception.CannotCreateBookingException;
 import ru.practicum.shareit.booking.exception.MissingBookingException;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
@@ -33,8 +34,11 @@ public class BookingServiceImpl implements BookingService {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
 
+    private static final int BOOKING_DATE_SLACK_MINUTES = 1;
+
     @Override
     public BookingResponseDto createBooking(CreateBookingDto dto, Long userId) {
+        validateBookingDates(dto.start(), dto.end());
 
         Item item = itemRepository.findById(dto.itemId())
                 .orElseThrow(() -> new ItemNotFoundException("Вещь с id=" + dto.itemId() + " не найдена"));
@@ -150,6 +154,23 @@ public class BookingServiceImpl implements BookingService {
             return State.valueOf(state.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Неизвестный статус бронирования: " + state);
+        }
+    }
+
+
+    private void validateBookingDates(LocalDateTime start, LocalDateTime end) {
+        if (!end.isAfter(start)) {
+            throw new BookingDateValidationException(
+                    "Дата окончания бронирования должна быть позже даты начала");
+        }
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime earliestAllowed = now.minusMinutes(BOOKING_DATE_SLACK_MINUTES);
+        if (start.isBefore(earliestAllowed)) {
+            throw new BookingDateValidationException(
+                    "start должен быть в настоящем или будущем");
+        }
+        if (end.isBefore(earliestAllowed)) {
+            throw new BookingDateValidationException("end должен быть в будущем");
         }
     }
 
