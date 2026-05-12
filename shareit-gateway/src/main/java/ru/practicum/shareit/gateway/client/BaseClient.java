@@ -59,7 +59,7 @@ public abstract class BaseClient {
         return rest.exchange(URI.create(base() + path), HttpMethod.DELETE, new HttpEntity<>(headers(userId)), String.class);
     }
 
-    protected static ResponseEntity<String> forward(ResponseEntity<String> fromServer) {
+    public static ResponseEntity<String> forward(ResponseEntity<String> fromServer) {
         MediaType ct = fromServer.getHeaders().getContentType();
         return ResponseEntity.status(fromServer.getStatusCode())
                 .contentType(ct != null ? ct : MediaType.APPLICATION_JSON)

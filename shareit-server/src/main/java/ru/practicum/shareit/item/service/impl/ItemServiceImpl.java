@@ -95,7 +95,7 @@ public class ItemServiceImpl implements ItemService {
 
         ItemResponseDto dto = ItemMapper.itemToResponseDto(item);
 
-        List<CommentResponseDto> comments = commentRepository.findByItemId(itemId)
+        List<CommentResponseDto> comments = commentRepository.findByItem_Id(itemId)
                 .stream()
                 .map(CommentMapper::toResponseDto)
                 .toList();
