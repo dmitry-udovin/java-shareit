@@ -1,6 +1,7 @@
 package ru.practicum.shareit.exception;
 
 import org.junit.jupiter.api.Test;
+import ru.practicum.shareit.booking.exception.BookingDateValidationException;
 import ru.practicum.shareit.comment.exception.CommentValidationException;
 import ru.practicum.shareit.item.exception.ItemNotAvailableException;
 import ru.practicum.shareit.user.exception.EmailAlreadyUserException;
@@ -28,5 +29,10 @@ class ExceptionConstructorsTest {
     @Test
     void commentValidationException_message() {
         assertThat(new CommentValidationException("c").getMessage()).isEqualTo("c");
+    }
+
+    @Test
+    void bookingDateValidationException_message() {
+        assertThat(new BookingDateValidationException("d").getMessage()).isEqualTo("d");
     }
 }
