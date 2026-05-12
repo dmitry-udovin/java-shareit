@@ -11,10 +11,14 @@ import ru.practicum.shareit.item.service.impl.ItemServiceImpl;
 import ru.practicum.shareit.request.dto.ItemRequestCreateDto;
 import ru.practicum.shareit.request.dto.ItemRequestResponseDto;
 import ru.practicum.shareit.request.exception.RequestNotFoundException;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.service.impl.ItemRequestServiceImpl;
+import ru.practicum.shareit.request.storage.ItemRequestRepository;
+import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.storage.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,6 +37,9 @@ class ItemRequestServiceImplIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ItemRequestRepository itemRequestRepository;
 
     private User requester;
     private User other;
@@ -112,5 +119,29 @@ class ItemRequestServiceImplIntegrationTest {
     void getAllRequests_invalidPagination_throws() {
         assertThatThrownBy(() -> itemRequestService.getAllRequests(requester.getId(), -1, 10))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void getAllRequests_zeroSize_throws() {
+        assertThatThrownBy(() -> itemRequestService.getAllRequests(requester.getId(), 0, 0))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void getRequestById_unknownUser_throws() {
+        assertThatThrownBy(() -> itemRequestService.getRequestById(1L, 999_999L))
+                .isInstanceOf(UserNotFoundException.class);
+    }
+
+    @Test
+    void itemRequest_entityPersistAndLoad() {
+        ItemRequest ir = new ItemRequest();
+        ir.setDescription("d");
+        ir.setRequester(requester);
+        ir.setCreated(LocalDateTime.now());
+        ItemRequest saved = itemRequestRepository.save(ir);
+        ItemRequest loaded = itemRequestRepository.findById(saved.getId()).orElseThrow();
+        assertThat(loaded.getDescription()).isEqualTo("d");
+        assertThat(loaded.getItems()).isNotNull();
     }
 }

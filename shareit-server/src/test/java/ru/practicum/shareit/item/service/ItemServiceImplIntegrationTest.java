@@ -11,10 +11,12 @@ import ru.practicum.shareit.booking.model.BookingApproveStatus;
 import ru.practicum.shareit.booking.storage.BookingRepository;
 import ru.practicum.shareit.comment.dto.CommentCreateDto;
 import ru.practicum.shareit.comment.dto.CommentResponseDto;
+import ru.practicum.shareit.comment.exception.CommentValidationException;
 import ru.practicum.shareit.item.dto.ItemCreateDto;
 import ru.practicum.shareit.item.dto.ItemResponseDto;
 import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
+import ru.practicum.shareit.item.exception.OwnerNotExistsException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.impl.ItemServiceImpl;
 import ru.practicum.shareit.item.storage.ItemRepository;
@@ -143,6 +145,37 @@ class ItemServiceImplIntegrationTest {
     void getItemById_missing_throws() {
         assertThatThrownBy(() -> itemService.getItemById(999L))
                 .isInstanceOf(ItemNotFoundException.class);
+    }
+
+    @Test
+    void updateItem_unknownOwner_throws() {
+        ItemResponseDto created = itemService.saveItem(
+                new ItemCreateDto("X", "Y", true, null),
+                owner.getId());
+
+        assertThatThrownBy(() -> itemService.updateItem(
+                new ItemUpdateDto("Z", "W", null),
+                999_999L,
+                created.id()))
+                .isInstanceOf(OwnerNotExistsException.class);
+    }
+
+    @Test
+    void addComment_withoutPastBooking_throws() {
+        ItemResponseDto item = itemService.saveItem(
+                new ItemCreateDto("Thing", "D", true, null),
+                owner.getId());
+
+        assertThatThrownBy(() -> itemService.addComment(item.id(), booker.getId(),
+                new CommentCreateDto("Bad")))
+                .isInstanceOf(CommentValidationException.class);
+    }
+
+    @Test
+    void getAllItemsInUserOwn_empty_returnsEmpty() {
+        User lone = userRepository.save(user("Lone", "lone-empty@t.test"));
+
+        assertThat(itemService.getAllItemsInUserOwn(lone.getId())).isEmpty();
     }
 
     private void saveApprovedBooking(Long itemId, LocalDateTime start, LocalDateTime end) {
