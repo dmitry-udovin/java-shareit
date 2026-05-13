@@ -29,7 +29,7 @@ class CreateBookingDtoJsonTest {
                 start.format(FMT),
                 end.format(FMT));
         CreateBookingDto dto = json.parse(body).getObject();
-        assertThat(dto.itemId()).isEqualTo(7L);
+        assertThat(dto.itemId()).isEqualTo(7);
         assertThat(dto.start()).isEqualTo(start);
         assertThat(dto.end()).isEqualTo(end);
         assertThat(dto.isPeriodValid()).isTrue();
@@ -39,7 +39,7 @@ class CreateBookingDtoJsonTest {
     void periodInvalidWhenEndNotAfterStart() {
         LocalDateTime start = LocalDateTime.now().plusDays(5).withNano(0);
         LocalDateTime end = start.minusHours(1);
-        CreateBookingDto dto = new CreateBookingDto(1L, start, end);
+        CreateBookingDto dto = new CreateBookingDto(1, start, end);
         assertThat(dto.isPeriodValid()).isFalse();
     }
 

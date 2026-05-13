@@ -47,7 +47,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRequestRepository requestRepository;
 
     @Override
-    public ItemResponseDto saveItem(ItemCreateDto createDto, Long ownerId) {
+    public ItemResponseDto saveItem(ItemCreateDto createDto, long ownerId) {
 
         Item item = ItemMapper.itemDtoToItem(createDto);
 
@@ -69,7 +69,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemResponseDto updateItem(ItemUpdateDto itemDto, Long ownerId, Long itemId) {
+    public ItemResponseDto updateItem(ItemUpdateDto itemDto, long ownerId, long itemId) {
 
         Item item = itemRepository.findById(itemId).orElseThrow(() ->
                 new ItemNotFoundException("Вещь с указанным номером отсутствует."));
@@ -89,7 +89,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public ItemResponseDto getItemById(Long itemId) {
+    public ItemResponseDto getItemById(long itemId) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ItemNotFoundException("Вещь с указанным номером отсутствует."));
 
@@ -105,7 +105,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ItemResponseDto> getAllItemsInUserOwn(Long userId) {
+    public List<ItemResponseDto> getAllItemsInUserOwn(long userId) {
 
         List<Item> items = itemRepository.findByOwnerId(userId);
         if (items.isEmpty()) {
@@ -126,13 +126,11 @@ public class ItemServiceImpl implements ItemService {
             ItemResponseDto dto = ItemMapper.itemToResponseDto(item);
             List<Booking> itemBookings = bookingsByItem.getOrDefault(item.getId(), Collections.emptyList());
 
-            // первое ближайшее бронирование
             Booking next = itemBookings.stream()
                     .filter(b -> b.getStartRentTime().isAfter(now))
                     .min(Comparator.comparing(Booking::getStartRentTime))
                     .orElse(null);
 
-            // последнее завершенное
             Booking last = itemBookings.stream()
                     .filter(b -> b.getEndRentTime().isBefore(now))
                     .max(Comparator.comparing(Booking::getEndRentTime))
@@ -162,7 +160,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public CommentResponseDto addComment(Long itemId, Long userId, CommentCreateDto dto) {
+    public CommentResponseDto addComment(long itemId, long userId, CommentCreateDto dto) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ItemNotFoundException("Вещь с id=" + itemId + " не найдена"));
 

@@ -5,10 +5,10 @@ import ru.practicum.shareit.comment.dto.CommentResponseDto;
 
 import java.util.List;
 
-public record ItemResponseDto(Long id, String name, String description, Boolean available, BookingShortDto lastBooking,
+public record ItemResponseDto(long id, String name, String description, boolean available, BookingShortDto lastBooking,
                               BookingShortDto nextBooking, List<CommentResponseDto> comments) {
 
-    public ItemResponseDto(Long id, String name, String description, Boolean available) {
+    public ItemResponseDto(long id, String name, String description, boolean available) {
         this(id, name, description, available, null, null, null);
     }
 

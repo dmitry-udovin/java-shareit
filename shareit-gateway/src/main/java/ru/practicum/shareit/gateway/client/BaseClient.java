@@ -22,41 +22,60 @@ public abstract class BaseClient {
         return serverUrl.endsWith("/") ? serverUrl.substring(0, serverUrl.length() - 1) : serverUrl;
     }
 
-    protected HttpHeaders headers(Long userId) {
+    protected HttpHeaders jsonHeaders() {
         HttpHeaders h = new HttpHeaders();
         h.setContentType(MediaType.APPLICATION_JSON);
-        if (userId != null && userId != 0L) {
-            h.add("X-Sharer-User-Id", Long.toString(userId));
-        }
         return h;
     }
 
-    protected ResponseEntity<String> httpGet(String path, Long userId) {
-        return rest.exchange(URI.create(base() + path), HttpMethod.GET, new HttpEntity<>(headers(userId)), String.class);
+    protected HttpHeaders jsonHeaders(long sharerUserId) {
+        HttpHeaders h = jsonHeaders();
+        h.add("X-Sharer-User-Id", Long.toString(sharerUserId));
+        return h;
     }
 
-    protected ResponseEntity<String> httpGet(String path, Long userId, Map<String, String> query) {
+    protected ResponseEntity<String> httpGet(String path) {
+        return rest.exchange(URI.create(base() + path), HttpMethod.GET, new HttpEntity<>(jsonHeaders()), String.class);
+    }
+
+    protected ResponseEntity<String> httpGet(String path, long userId) {
+        return rest.exchange(URI.create(base() + path), HttpMethod.GET, new HttpEntity<>(jsonHeaders(userId)), String.class);
+    }
+
+    protected ResponseEntity<String> httpGet(String path, long userId, Map<String, String> query) {
         UriComponentsBuilder b = UriComponentsBuilder.fromUriString(base() + path);
         if (query != null) {
             query.forEach(b::queryParam);
         }
-        return rest.exchange(b.build().encode().toUri(), HttpMethod.GET, new HttpEntity<>(headers(userId)), String.class);
+        return rest.exchange(b.build().encode().toUri(), HttpMethod.GET, new HttpEntity<>(jsonHeaders(userId)), String.class);
     }
 
-    protected ResponseEntity<String> httpPost(String path, Object body, Long userId) {
-        return rest.exchange(URI.create(base() + path), HttpMethod.POST, new HttpEntity<>(body, headers(userId)), String.class);
+    protected ResponseEntity<String> httpPost(String path, Object body) {
+        return rest.exchange(URI.create(base() + path), HttpMethod.POST, new HttpEntity<>(body, jsonHeaders()), String.class);
     }
 
-    protected ResponseEntity<String> httpPatch(String path, Object body, Long userId) {
-        return rest.exchange(URI.create(base() + path), HttpMethod.PATCH, new HttpEntity<>(body, headers(userId)), String.class);
+    protected ResponseEntity<String> httpPost(String path, Object body, long userId) {
+        return rest.exchange(URI.create(base() + path), HttpMethod.POST, new HttpEntity<>(body, jsonHeaders(userId)), String.class);
     }
 
-    protected ResponseEntity<String> httpPatchUri(URI uri, Long userId) {
-        return rest.exchange(uri, HttpMethod.PATCH, new HttpEntity<>(headers(userId)), String.class);
+    protected ResponseEntity<String> httpPatch(String path, Object body) {
+        return rest.exchange(URI.create(base() + path), HttpMethod.PATCH, new HttpEntity<>(body, jsonHeaders()), String.class);
     }
 
-    protected ResponseEntity<String> httpDelete(String path, Long userId) {
-        return rest.exchange(URI.create(base() + path), HttpMethod.DELETE, new HttpEntity<>(headers(userId)), String.class);
+    protected ResponseEntity<String> httpPatch(String path, Object body, long userId) {
+        return rest.exchange(URI.create(base() + path), HttpMethod.PATCH, new HttpEntity<>(body, jsonHeaders(userId)), String.class);
+    }
+
+    protected ResponseEntity<String> httpPatchUri(URI uri, long userId) {
+        return rest.exchange(uri, HttpMethod.PATCH, new HttpEntity<>(jsonHeaders(userId)), String.class);
+    }
+
+    protected ResponseEntity<String> httpDelete(String path) {
+        return rest.exchange(URI.create(base() + path), HttpMethod.DELETE, new HttpEntity<>(jsonHeaders()), String.class);
+    }
+
+    protected ResponseEntity<String> httpDelete(String path, long userId) {
+        return rest.exchange(URI.create(base() + path), HttpMethod.DELETE, new HttpEntity<>(jsonHeaders(userId)), String.class);
     }
 
     public static ResponseEntity<String> forward(ResponseEntity<String> fromServer) {

@@ -37,7 +37,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     @Transactional
-    public ItemRequestResponseDto create(Long userId, ItemRequestCreateDto dto) {
+    public ItemRequestResponseDto create(long userId, ItemRequestCreateDto dto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Пользователь с id " + userId + " не найден"));
 
@@ -53,7 +53,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    public List<ItemRequestResponseDto> getOwnerRequests(Long userId) {
+    public List<ItemRequestResponseDto> getOwnerRequests(long userId) {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException("Пользователь с id " + userId + " не найден");
         }
@@ -71,7 +71,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    public List<ItemRequestResponseDto> getAllRequests(Long userId, Integer from, Integer size) {
+    public List<ItemRequestResponseDto> getAllRequests(long userId, int from, int size) {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException("Пользователь с id " + userId + " не найден");
         }
@@ -96,7 +96,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    public ItemRequestResponseDto getRequestById(Long requestId, Long userId) {
+    public ItemRequestResponseDto getRequestById(long requestId, long userId) {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException("Пользователь с id " + userId + " не найден");
         }

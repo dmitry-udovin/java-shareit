@@ -16,22 +16,22 @@ public class ItemRequestProxyClient extends BaseClient {
         super(rest, serverUrl);
     }
 
-    public ResponseEntity<String> create(ItemRequestCreateDto dto, Long userId) {
+    public ResponseEntity<String> create(ItemRequestCreateDto dto, long userId) {
         return httpPost("/requests", dto, userId);
     }
 
-    public ResponseEntity<String> getOwn(Long userId) {
+    public ResponseEntity<String> getOwn(long userId) {
         return httpGet("/requests", userId);
     }
 
-    public ResponseEntity<String> getAllOthers(int from, int size, Long userId) {
+    public ResponseEntity<String> getAllOthers(int from, int size, long userId) {
         Map<String, String> q = new HashMap<>();
         q.put("from", String.valueOf(from));
         q.put("size", String.valueOf(size));
         return httpGet("/requests/all", userId, q);
     }
 
-    public ResponseEntity<String> getById(Long requestId, Long userId) {
+    public ResponseEntity<String> getById(long requestId, long userId) {
         return httpGet("/requests/" + requestId, userId);
     }
 }

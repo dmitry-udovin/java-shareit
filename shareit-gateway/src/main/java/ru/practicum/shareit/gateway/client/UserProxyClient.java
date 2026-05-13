@@ -15,22 +15,22 @@ public class UserProxyClient extends BaseClient {
     }
 
     public ResponseEntity<String> create(UserCreateDto dto) {
-        return httpPost("/users", dto, null);
+        return httpPost("/users", dto);
     }
 
     public ResponseEntity<String> update(long userId, UserUpdateDto dto) {
-        return httpPatch("/users/" + userId, dto, null);
+        return httpPatch("/users/" + userId, dto);
     }
 
     public ResponseEntity<String> findAll() {
-        return httpGet("/users", null);
+        return httpGet("/users");
     }
 
     public ResponseEntity<String> findById(long userId) {
-        return httpGet("/users/" + userId, null);
+        return httpGet("/users/" + userId);
     }
 
     public ResponseEntity<String> delete(long userId) {
-        return httpDelete("/users/" + userId, null);
+        return httpDelete("/users/" + userId);
     }
 }

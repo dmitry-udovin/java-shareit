@@ -178,7 +178,7 @@ class ItemServiceImplIntegrationTest {
         assertThat(itemService.getAllItemsInUserOwn(lone.getId())).isEmpty();
     }
 
-    private void saveApprovedBooking(Long itemId, LocalDateTime start, LocalDateTime end) {
+    private void saveApprovedBooking(long itemId, LocalDateTime start, LocalDateTime end) {
         Item item = itemRepository.findById(itemId).orElseThrow();
         Booking b = new Booking();
         b.setBookedItem(item);

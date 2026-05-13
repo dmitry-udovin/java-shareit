@@ -14,10 +14,8 @@ public class BookingMapper {
 
     public static BookingResponseDto toResponseDto(Booking booking) {
 
-        // Маппим booker
         UserShortDto bookerDto = new UserShortDto(booking.getUserWhoBooked().getId());
 
-        // Маппим item
         ItemShortDto itemDto = new ItemShortDto(
                 booking.getBookedItem().getId(),
                 booking.getBookedItem().getName(),

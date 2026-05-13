@@ -6,7 +6,7 @@ import ru.practicum.shareit.user.dto.UserShortDto;
 
 import java.time.LocalDateTime;
 
-public record BookingResponseDto(Long id, LocalDateTime start, LocalDateTime end, BookingApproveStatus status,
+public record BookingResponseDto(long id, LocalDateTime start, LocalDateTime end, BookingApproveStatus status,
                                  UserShortDto booker, ItemShortDto item) {
 
 }

@@ -72,7 +72,7 @@ class UserMapperTest {
         u.setId(5L);
         u.setName("a");
         u.setEmail("a@a.a");
-        assertThat(UserMapper.userToResponseDto(u).id()).isEqualTo(5L);
+        assertThat(UserMapper.userToResponseDto(u).id()).isEqualTo(5);
         assertThat(UserMapper.userToResponseDto(u).name()).isEqualTo("a");
     }
 }

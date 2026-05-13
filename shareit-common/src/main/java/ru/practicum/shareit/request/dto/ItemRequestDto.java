@@ -5,9 +5,9 @@ import ru.practicum.shareit.item.dto.ItemShortDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record ItemRequestDto(Long id,
+public record ItemRequestDto(long id,
                              String description,
-                             Long requesterId,
+                             long requesterId,
                              LocalDateTime created,
                              List<ItemShortDto> items
 ) {}

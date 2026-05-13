@@ -16,11 +16,11 @@ public class BookingProxyClient extends BaseClient {
         super(rest, serverUrl);
     }
 
-    public ResponseEntity<String> create(CreateBookingDto dto, Long userId) {
+    public ResponseEntity<String> create(CreateBookingDto dto, long userId) {
         return httpPost("/bookings", dto, userId);
     }
 
-    public ResponseEntity<String> patchStatus(Long bookingId, boolean approved, Long ownerId) {
+    public ResponseEntity<String> patchStatus(long bookingId, boolean approved, long ownerId) {
         var uri = UriComponentsBuilder.fromUriString(base() + "/bookings/" + bookingId)
                 .queryParam("approved", approved)
                 .build()
@@ -28,15 +28,15 @@ public class BookingProxyClient extends BaseClient {
         return httpPatchUri(uri, ownerId);
     }
 
-    public ResponseEntity<String> getById(Long bookingId, Long userId) {
+    public ResponseEntity<String> getById(long bookingId, long userId) {
         return httpGet("/bookings/" + bookingId, userId);
     }
 
-    public ResponseEntity<String> findForUser(String state, Long userId) {
+    public ResponseEntity<String> findForUser(String state, long userId) {
         return httpGet("/bookings", userId, Map.of("state", state));
     }
 
-    public ResponseEntity<String> findForOwner(String state, Long ownerId) {
+    public ResponseEntity<String> findForOwner(String state, long ownerId) {
         return httpGet("/bookings/owner", ownerId, Map.of("state", state));
     }
 }

@@ -27,32 +27,32 @@ public class BookingGatewayController {
 
     @PostMapping
     public ResponseEntity<String> create(@Valid @RequestBody CreateBookingDto dto,
-                                         @RequestHeader("X-Sharer-User-Id") Long userId) {
+                                         @RequestHeader("X-Sharer-User-Id") long userId) {
         return BaseClient.forward(bookingProxyClient.create(dto, userId));
     }
 
     @PatchMapping("/{bookingId}")
-    public ResponseEntity<String> patchStatus(@PathVariable Long bookingId,
-                                              @RequestParam Boolean approved,
-                                              @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public ResponseEntity<String> patchStatus(@PathVariable long bookingId,
+                                              @RequestParam boolean approved,
+                                              @RequestHeader("X-Sharer-User-Id") long ownerId) {
         return BaseClient.forward(bookingProxyClient.patchStatus(bookingId, approved, ownerId));
     }
 
     @GetMapping("/{bookingId}")
-    public ResponseEntity<String> getById(@PathVariable Long bookingId,
-                                          @RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ResponseEntity<String> getById(@PathVariable long bookingId,
+                                          @RequestHeader("X-Sharer-User-Id") long userId) {
         return BaseClient.forward(bookingProxyClient.getById(bookingId, userId));
     }
 
     @GetMapping
     public ResponseEntity<String> findForUser(@RequestParam(defaultValue = "ALL") String state,
-                                                @RequestHeader("X-Sharer-User-Id") Long userId) {
+                                                @RequestHeader("X-Sharer-User-Id") long userId) {
         return BaseClient.forward(bookingProxyClient.findForUser(state, userId));
     }
 
     @GetMapping("/owner")
     public ResponseEntity<String> findForOwner(@RequestParam(defaultValue = "ALL") String state,
-                                                 @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+                                                 @RequestHeader("X-Sharer-User-Id") long ownerId) {
         return BaseClient.forward(bookingProxyClient.findForOwner(state, ownerId));
     }
 }

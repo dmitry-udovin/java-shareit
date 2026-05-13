@@ -15,7 +15,7 @@ public class ItemRequestMapper {
                 request.getDescription(),
                 request.getRequester().getId(),
                 request.getCreated(),
-                List.of()  // пустой список items
+                List.of()
         );
     }
 

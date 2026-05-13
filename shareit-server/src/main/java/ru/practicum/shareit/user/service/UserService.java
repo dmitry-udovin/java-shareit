@@ -10,12 +10,12 @@ public interface UserService {
 
     UserResponseDto saveUser(UserCreateDto userCreateDto);
 
-    UserResponseDto updateUser(Long userId, UserUpdateDto userDto);
+    UserResponseDto updateUser(long userId, UserUpdateDto userDto);
 
-    UserResponseDto getUserById(Long userId);
+    UserResponseDto getUserById(long userId);
 
     List<UserResponseDto> getAllUsers();
 
-    UserResponseDto deleteUser(Long userId);
+    UserResponseDto deleteUser(long userId);
 
 }

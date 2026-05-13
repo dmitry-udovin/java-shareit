@@ -24,10 +24,10 @@ public class Item {
     private String name;
     private String description;
     @Column(name = "owner_id")
-    private Long ownerId;
+    private long ownerId;
     @Column(name = "count_rents")
     private int countRents;
-    private Boolean available;
+    private boolean available;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")

@@ -39,7 +39,7 @@ public class ItemMapper {
     public static ItemResponseDto itemToResponseDto(Item item) {
 
         return new ItemResponseDto(item.getId(), item.getName(), item.getDescription(),
-                item.getAvailable());
+                item.isAvailable());
     }
 
 }

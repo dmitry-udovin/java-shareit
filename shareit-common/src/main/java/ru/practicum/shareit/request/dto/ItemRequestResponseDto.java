@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record ItemRequestResponseDto(
-        Long id,
+        long id,
         String description,
-        Long requesterId,
+        long requesterId,
         LocalDateTime created,
         List<ItemShortDto> items
 ) {}

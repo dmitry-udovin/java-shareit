@@ -29,38 +29,38 @@ public class ItemGatewayController {
 
     @PostMapping
     public ResponseEntity<String> create(@Valid @RequestBody ItemCreateDto dto,
-                                         @RequestHeader("X-Sharer-User-Id") Long userId) {
+                                         @RequestHeader("X-Sharer-User-Id") long userId) {
         return BaseClient.forward(itemProxyClient.create(dto, userId));
     }
 
     @PatchMapping("/{itemId}")
-    public ResponseEntity<String> update(@PathVariable Long itemId,
+    public ResponseEntity<String> update(@PathVariable long itemId,
                                          @Valid @RequestBody ItemUpdateDto dto,
-                                         @RequestHeader("X-Sharer-User-Id") Long userId) {
+                                         @RequestHeader("X-Sharer-User-Id") long userId) {
         return BaseClient.forward(itemProxyClient.update(itemId, dto, userId));
     }
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<String> getById(@PathVariable Long itemId,
-                                          @RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ResponseEntity<String> getById(@PathVariable long itemId,
+                                          @RequestHeader("X-Sharer-User-Id") long userId) {
         return BaseClient.forward(itemProxyClient.getById(itemId, userId));
     }
 
     @GetMapping
-    public ResponseEntity<String> getAll(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ResponseEntity<String> getAll(@RequestHeader("X-Sharer-User-Id") long userId) {
         return BaseClient.forward(itemProxyClient.getAll(userId));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<String> search(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<String> search(@RequestHeader("X-Sharer-User-Id") long userId,
                                          @RequestParam String text) {
         return BaseClient.forward(itemProxyClient.search(text, userId));
     }
 
     @PostMapping("/{itemId}/comment")
-    public ResponseEntity<String> addComment(@PathVariable Long itemId,
+    public ResponseEntity<String> addComment(@PathVariable long itemId,
                                              @Valid @RequestBody CommentCreateDto dto,
-                                             @RequestHeader("X-Sharer-User-Id") Long userId) {
+                                             @RequestHeader("X-Sharer-User-Id") long userId) {
         return BaseClient.forward(itemProxyClient.addComment(itemId, dto, userId));
     }
 }

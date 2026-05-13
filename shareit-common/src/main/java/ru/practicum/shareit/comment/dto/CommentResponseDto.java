@@ -3,7 +3,7 @@ package ru.practicum.shareit.comment.dto;
 import java.time.LocalDateTime;
 
 public record CommentResponseDto(
-        Long id,
+        long id,
         String text,
         String authorName,
         LocalDateTime created

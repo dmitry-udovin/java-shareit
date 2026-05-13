@@ -1,4 +1,4 @@
 package ru.practicum.shareit.item.dto;
 
-public record ItemShortDto(Long id, String name, Long ownerId) {
+public record ItemShortDto(long id, String name, long ownerId) {
 }

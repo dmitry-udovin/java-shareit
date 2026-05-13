@@ -10,16 +10,16 @@ import java.util.List;
 
 public interface ItemService {
 
-    ItemResponseDto saveItem(ItemCreateDto createDto, Long ownerId);
+    ItemResponseDto saveItem(ItemCreateDto createDto, long ownerId);
 
-    ItemResponseDto updateItem(ItemUpdateDto itemDto, Long ownerId, Long itemId);
+    ItemResponseDto updateItem(ItemUpdateDto itemDto, long ownerId, long itemId);
 
-    ItemResponseDto getItemById(Long itemId);
+    ItemResponseDto getItemById(long itemId);
 
-    List<ItemResponseDto> getAllItemsInUserOwn(Long userId);
+    List<ItemResponseDto> getAllItemsInUserOwn(long userId);
 
     List<ItemResponseDto> getItemsBySearch(String text);
 
-    CommentResponseDto addComment(Long itemId, Long userId, CommentCreateDto dto);
+    CommentResponseDto addComment(long itemId, long userId, CommentCreateDto dto);
 
 }

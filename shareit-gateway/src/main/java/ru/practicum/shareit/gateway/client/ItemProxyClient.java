@@ -17,27 +17,27 @@ public class ItemProxyClient extends BaseClient {
         super(rest, serverUrl);
     }
 
-    public ResponseEntity<String> create(ItemCreateDto dto, Long userId) {
+    public ResponseEntity<String> create(ItemCreateDto dto, long userId) {
         return httpPost("/items", dto, userId);
     }
 
-    public ResponseEntity<String> update(Long itemId, ItemUpdateDto dto, Long userId) {
+    public ResponseEntity<String> update(long itemId, ItemUpdateDto dto, long userId) {
         return httpPatch("/items/" + itemId, dto, userId);
     }
 
-    public ResponseEntity<String> getById(Long itemId, Long userId) {
+    public ResponseEntity<String> getById(long itemId, long userId) {
         return httpGet("/items/" + itemId, userId);
     }
 
-    public ResponseEntity<String> getAll(Long userId) {
+    public ResponseEntity<String> getAll(long userId) {
         return httpGet("/items", userId);
     }
 
-    public ResponseEntity<String> search(String text, Long userId) {
+    public ResponseEntity<String> search(String text, long userId) {
         return httpGet("/items/search", userId, Map.of("text", text));
     }
 
-    public ResponseEntity<String> addComment(Long itemId, CommentCreateDto dto, Long userId) {
+    public ResponseEntity<String> addComment(long itemId, CommentCreateDto dto, long userId) {
         return httpPost("/items/" + itemId + "/comment", dto, userId);
     }
 }

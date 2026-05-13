@@ -20,7 +20,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                     "WHERE b.userWhoBooked.id = :userId OR i.ownerId = :userId " +
                     "ORDER BY b.startRentTime DESC"
     )
-    List<Booking> findByUserIdOrderByStartDesc(@Param("userId") Long userId);
+    List<Booking> findByUserIdOrderByStartDesc(@Param("userId") long userId);
 
     @Query(
             "SELECT b FROM Booking b " +
@@ -29,7 +29,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                     "WHERE i.ownerId = :ownerId " +
                     "ORDER BY b.startRentTime DESC"
     )
-    List<Booking> findByOwnerIdOrderByStartDesc(@Param("ownerId") Long ownerId);
+    List<Booking> findByOwnerIdOrderByStartDesc(@Param("ownerId") long ownerId);
 
     @Query("SELECT b FROM Booking b WHERE b.bookedItem.id IN :itemIds AND b.status = :status")
     List<Booking> findApprovedByItemIds(@Param("itemIds") Collection<Long> itemIds,
@@ -40,8 +40,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "AND b.userWhoBooked.id = :userId " +
             "AND b.status = 'APPROVED' " +
             "AND b.endRentTime <= :now")
-    Optional<Booking> findApprovedPastBooking(@Param("itemId") Long itemId,
-                                              @Param("userId") Long userId,
+    Optional<Booking> findApprovedPastBooking(@Param("itemId") long itemId,
+                                              @Param("userId") long userId,
                                               @Param("now") LocalDateTime now);
 
 }

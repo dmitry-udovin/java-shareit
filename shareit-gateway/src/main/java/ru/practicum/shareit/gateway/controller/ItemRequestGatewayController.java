@@ -25,26 +25,26 @@ public class ItemRequestGatewayController {
     private final ItemRequestProxyClient itemRequestProxyClient;
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<String> create(@RequestHeader("X-Sharer-User-Id") long userId,
                                          @Valid @RequestBody ItemRequestCreateDto dto) {
         return BaseClient.forward(itemRequestProxyClient.create(dto, userId));
     }
 
     @GetMapping
-    public ResponseEntity<String> getOwn(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ResponseEntity<String> getOwn(@RequestHeader("X-Sharer-User-Id") long userId) {
         return BaseClient.forward(itemRequestProxyClient.getOwn(userId));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<String> getAll(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                         @RequestParam(defaultValue = "0") Integer from,
-                                         @RequestParam(defaultValue = "10") Integer size) {
+    public ResponseEntity<String> getAll(@RequestHeader("X-Sharer-User-Id") long userId,
+                                         @RequestParam(defaultValue = "0") int from,
+                                         @RequestParam(defaultValue = "10") int size) {
         return BaseClient.forward(itemRequestProxyClient.getAllOthers(from, size, userId));
     }
 
     @GetMapping("/{requestId}")
-    public ResponseEntity<String> getById(@PathVariable Long requestId,
-                                          @RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ResponseEntity<String> getById(@PathVariable long requestId,
+                                          @RequestHeader("X-Sharer-User-Id") long userId) {
         return BaseClient.forward(itemRequestProxyClient.getById(requestId, userId));
     }
 }

@@ -1,4 +1,4 @@
 package ru.practicum.shareit.user.dto;
 
-public record UserShortDto(Long id) {
+public record UserShortDto(long id) {
 }

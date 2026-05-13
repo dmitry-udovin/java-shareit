@@ -6,24 +6,21 @@ import org.springframework.data.repository.query.Param;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
-
-    Optional<Item> findById(Long itemId);
 
     @Query("SELECT i FROM Item i WHERE i.available = true AND " +
             "(LOWER(i.name) LIKE LOWER(CONCAT('%', :text, '%')) OR " +
             "LOWER(i.description) LIKE LOWER(CONCAT('%', :text, '%')))")
     List<Item> searchByText(@Param("text") String text);
 
-    List<Item> findByOwnerId(Long ownerId);
+    List<Item> findByOwnerId(long ownerId);
 
-    boolean existsByIdAndOwnerId(Long itemId, Long ownerId);
+    boolean existsByIdAndOwnerId(long itemId, long ownerId);
 
-    List<Item> findByOwnerIdAndAvailableTrue(Long ownerId);
+    List<Item> findByOwnerIdAndAvailableTrue(long ownerId);
 
-    List<Item> findByRequestIdOrderByIdAsc(Long requestId);
+    List<Item> findByRequestIdOrderByIdAsc(long requestId);
 
     List<Item> findByRequestIdInOrderByIdAsc(List<Long> requestIds);
 

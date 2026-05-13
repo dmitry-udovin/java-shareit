@@ -213,7 +213,7 @@ class BookingServiceImplIntegrationTest {
         LocalDateTime end = start.plusDays(1);
 
         assertThatThrownBy(() -> bookingService.createBooking(
-                new CreateBookingDto(999_999L, start, end),
+                new CreateBookingDto(999_999, start, end),
                 booker.getId()))
                 .isInstanceOf(ItemNotFoundException.class);
     }

@@ -37,7 +37,7 @@ public class BookingServiceImpl implements BookingService {
     private static final int BOOKING_DATE_SLACK_MINUTES = 1;
 
     @Override
-    public BookingResponseDto createBooking(CreateBookingDto dto, Long userId) {
+    public BookingResponseDto createBooking(CreateBookingDto dto, long userId) {
         validateBookingDates(dto.start(), dto.end());
 
         Item item = itemRepository.findById(dto.itemId())
@@ -47,11 +47,11 @@ public class BookingServiceImpl implements BookingService {
         User booker = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Пользователь с id=" + userId + " не найден"));
 
-        if (item != null && item.getOwnerId().equals(userId)) {
+        if (item.getOwnerId() == userId) {
             throw new CannotCreateBookingException("Вы не можете забронировать вещь у самого себя");
         }
 
-        if (!item.getAvailable()) {
+        if (!item.isAvailable()) {
             throw new CannotCreateBookingException("Вы не можете забронировать вещь у самого себя");
         }
 
@@ -66,13 +66,13 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingResponseDto updateBookingStatus(Long bookingId, Boolean approved, Long ownerId) {
+    public BookingResponseDto updateBookingStatus(long bookingId, boolean approved, long ownerId) {
 
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() ->
                 new MissingBookingException("Заказа на бронирование с номером " + bookingId + " не существует"));
 
 
-        if (!booking.getBookedItem().getOwnerId().equals(ownerId)) {
+        if (booking.getBookedItem().getOwnerId() != ownerId) {
             throw new MissingBookingException("Бронирование не найдено");
         }
 
@@ -83,14 +83,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public BookingResponseDto findBookingById(Long bookingId, Long userId) {
+    public BookingResponseDto findBookingById(long bookingId, long userId) {
 
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new MissingBookingException(
                         "Заказ на бронирование с номером " + bookingId + " не существует"));
 
         boolean isBooker = booking.getUserWhoBooked().getId().equals(userId);
-        boolean isOwner = booking.getBookedItem().getOwnerId().equals(userId);
+        boolean isOwner = booking.getBookedItem().getOwnerId() == userId;
 
         if (!isBooker && !isOwner) {
             throw new AccessDeniedException("Нет прав на просмотр данного бронирования");
@@ -101,7 +101,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingResponseDto> findBookingsForUser(Long userId, String state) {
+    public List<BookingResponseDto> findBookingsForUser(long userId, String state) {
 
         userRepository.findById(userId).orElseThrow(() ->
                 new UserNotFoundException("Пользователь с id=" + userId + " не найден"));
@@ -120,7 +120,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingResponseDto> findBookingsForOwnerItems(Long ownerId, String state) {
+    public List<BookingResponseDto> findBookingsForOwnerItems(long ownerId, String state) {
 
         userRepository.findById(ownerId).orElseThrow(() ->
                 new UserNotFoundException("Пользователь с id=" + ownerId + " не найден"));
