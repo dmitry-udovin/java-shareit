@@ -1,0 +1,18 @@
+server:
+  port: 8080
+  address: 0.0.0.0
+
+shareit:
+  server:
+    url: ${SHAREIT_SERVER_URL:http://${SHAREIT_SERVER_HOST:shareit-server}:9090}
+
+spring:
+  main:
+    banner-mode: off
+  jmx:
+    enabled: false
+
+logging:
+  level:
+    org.springframework: WARN
+    org.apache.catalina: WARN
