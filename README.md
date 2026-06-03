@@ -1,1 +1,1 @@
-# java-shareit
+# java-shareit (сервис аренды вещей)
